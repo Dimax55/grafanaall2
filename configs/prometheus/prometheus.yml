@@ -46,4 +46,19 @@ scrape_configs:
   - job_name: "windows_test"
     static_configs:
       - targets: ["10.10.13.55:9182"]
+
+  - job_name: 'Mikrotik'
+    static_configs:
+      - targets:
+        - 172.16.1.2  # Mikrotik device.
+    metrics_path: /snmp
+    params:
+      module: [mikrotik]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 127.0.0.1:9116
       
